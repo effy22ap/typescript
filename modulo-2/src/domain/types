@@ -1,0 +1,46 @@
+//Entidades:
+
+export interface Estudiante {
+    readonly id: number;
+    nombre: string;
+    email: string;
+}
+
+export interface Asignatura {
+    readonly id: string;
+    nombre: string;
+    creditos: number;
+}
+
+// Union Discriminada
+
+interface MatriculaActiva {
+    tipo:"ACTIVA";
+    asignaturas: string[];
+}
+interface MatriculaSuspendida{
+    tipo:"SUSPENDIDA";
+    motivo: string;
+}
+interface MatriculaFinalizada {
+    tipo: "FINALIZADA";
+    notaMedia: number;
+}
+
+export type EstadoMatricula = MatriculaActiva | MatriculaSuspendida | MatriculaFinalizada
+
+//Funcion generadora
+
+export function generarReporte(estado: EstadoMatricula): string {
+    switch (estado.tipo) {
+        case "ACTIVA":
+            return `El estudiante está cursando: ${estado.asignaturas.join(", ")}`;
+        case "SUSPENDIDA":
+            return `Matrícula suspendida por: ${estado.motivo}`;
+        case "FINALIZADA":
+            return `Estudios concluidos con nota media de: ${estado.notaMedia}`;
+        default:
+        const _exhaustiveCheck: never = estado;
+        return _exhaustiveCheck;
+    }
+}
